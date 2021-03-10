@@ -1,0 +1,62 @@
+Generic Binary Search
+
+Here is the general strategy behind binary search, which is applicable to a variety of problems:
+
+1) Come up with a condition to determine whether the answer lies before, after or at a given position
+2) Retrieve the midpoint and the middle element of the list.
+3) If it is the answer, return the middle position as the answer.
+4) If answer lies before it, repeat the search with the first half of the list
+5) If the answer lies after it, repeat the search with the second half of the list.
+
+
+Here is the generic algorithm for binary search, implemented in Python:
+
+
+
+def binary_search(lo, hi, condition):
+    """TODO - add docs"""
+    while lo <= hi:
+        mid = (lo + hi) // 2
+        result = condition(mid)
+        if result == 'found':
+            return mid
+        elif result == 'left':
+            hi = mid - 1
+        else:
+            lo = mid + 1
+    return -1
+    
+    
+    
+    
+    
+    
+*
+> The worst-case complexity or running time of binary search is O(log N), provided the complexity of the condition used to determine whether the answer lies before, after or at a given position is O(1).
+
+> Note that binary_search accepts a function condition as an argument. Python allows passing functions as arguments to other functions, unlike C++ and Java.
+
+
+
+
+
+
+
+
+~ We can now rewrite the locate_card function more succinctly using the binary_search function.
+
+
+def locate_card(cards, query):
+    
+    def condition(mid):
+        if cards[mid] == query:
+            if mid > 0 and cards[mid-1] == query:
+                return 'left'
+            else:
+                return 'found'
+        elif cards[mid] < query:
+            return 'left'
+        else:
+            return 'right'
+    
+    return binary_search(0, len(cards) - 1, condition)
